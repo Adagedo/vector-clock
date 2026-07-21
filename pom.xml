@@ -1,14 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
     <artifactId>vector-clock</artifactId>
+    <groupId>com.adagedo</groupId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
+
     <name>Vector Clock</name>
     <description>Java Implementation of vector clock</description>
+
+    <contributors>
+        <contributor>
+            <name>Adagedo Solomon</name>
+            <email>adagedosolomon52@gmail.com</email>
+        </contributor>
+    </contributors>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <jcip.version>1.0</jcip.version>
+        <junit.version>4.13.2</junit.version>
+
+        <surefire.version>3.5.5</surefire.version>
+        <jacoco.version>0.8.14</jacoco.version>
+
+        <skip.unit.tests>false</skip.unit.tests>
+        <surefireArgLine/>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>net.jcip</groupId>
+                <artifactId>jcip-annotations</artifactId>
+                <version>${jcip.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>net.jcip</groupId>
+            <artifactId>jcip-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <defaultGoal>
+            clean install site versions:display-dependency-updates
+        </defaultGoal>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
+
+                <configuration>
+                    <argLine>${surefireArgLine}</argLine>
+                    <skipTests>${skip.unit.tests}</skipTests>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+
+                <executions>
+
+                    <execution>
+                        <id>pre-unit-test</id>
+
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+
+                        <configuration>
+                            <destFile>
+                                ${project.build.directory}/coverage-reports/jacoco-ut.exec
+                            </destFile>
+
+                            <propertyName>
+                                surefireArgLine
+                            </propertyName>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+
+                        <configuration>
+                            <dataFile>
+                                ${project.build.directory}/coverage-reports/jacoco-ut.exec
+                            </dataFile>
+
+                            <outputDirectory>
+                                ${project.reporting.outputDirectory}/jacoco-ut
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
 
 </project>
